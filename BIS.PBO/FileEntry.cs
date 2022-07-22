@@ -1,6 +1,8 @@
 ﻿using BIS.Core.Streams;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.MemoryMappedFiles;
 using System.Text;
 
 namespace BIS.PBO
@@ -14,11 +16,13 @@ namespace BIS.PBO
         public int TimeStamp { get; set; }
         public int DataSize { get; set; }
 
+        public PBO Parent { get; private set; }
+
         public static int VersionMagic = BitConverter.ToInt32(Encoding.ASCII.GetBytes("sreV"), 0); //Vers
         public static int CompressionMagic = BitConverter.ToInt32(Encoding.ASCII.GetBytes("srpC"), 0); //Cprs
         public static int EncryptionMagic = BitConverter.ToInt32(Encoding.ASCII.GetBytes("rcnE"), 0); //Encr
 
-        public FileEntry()
+        public FileEntry(PBO parent)
         {
             FileName = "";
             CompressedMagic = 0;
@@ -26,10 +30,12 @@ namespace BIS.PBO
             StartOffset = 0;
             TimeStamp = 0;
             DataSize = 0;
+            Parent = parent;
         }
-        public FileEntry(BinaryReaderEx input)
+        public FileEntry(BinaryReaderEx input, PBO parent)
         {
             Read(input);
+            Parent = parent;
         }
 
         public void Read(BinaryReaderEx input)

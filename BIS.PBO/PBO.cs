@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.MemoryMappedFiles;
 using System.Linq;
 using BIS.Core;
 using BIS.Core.Streams;
@@ -32,13 +33,13 @@ namespace BIS.PBO
 
         static PBO()
         {
-            VersionEntry = new FileEntry
+            VersionEntry = new FileEntry(null)
             {
                 CompressedMagic = FileEntry.VersionMagic,
                 FileName = ""
             };
 
-            EmptyEntry = new FileEntry();
+            EmptyEntry = new FileEntry(null);
         }
 
         public PBO(string fileName, bool keepStreamOpen = false)
@@ -59,7 +60,7 @@ namespace BIS.PBO
             FileEntry pboEntry;
             do
             {
-                pboEntry = new FileEntry(input)
+                pboEntry = new FileEntry(input, this)
                 {
                     StartOffset = curOffset
                 };
