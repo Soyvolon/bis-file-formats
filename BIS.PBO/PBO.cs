@@ -33,13 +33,13 @@ namespace BIS.PBO
 
         static PBO()
         {
-            VersionEntry = new FileEntry(null)
+            VersionEntry = new FileEntry()
             {
                 CompressedMagic = FileEntry.VersionMagic,
                 FileName = ""
             };
 
-            EmptyEntry = new FileEntry(null);
+            EmptyEntry = new FileEntry();
         }
 
         public PBO(string fileName, bool keepStreamOpen = false)
@@ -60,7 +60,7 @@ namespace BIS.PBO
             FileEntry pboEntry;
             do
             {
-                pboEntry = new FileEntry(input, this)
+                pboEntry = new FileEntry(input)
                 {
                     StartOffset = curOffset
                 };
